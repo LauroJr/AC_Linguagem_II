@@ -2,6 +2,11 @@ import modulo_ac02
 
 ''' NOME: Lauro Mendes do Amaral Junior     RA: 1902047
     NOME: Ítalo Vinícius Gonçalo da Silva   RA: 1902072
+
+Foram criadas 6 funções. Cada uma testa uma condição de acordo com as normas
+descrita no módulo. Além de tratar erros da função, testando assim a funciona-
+lidade do código, trata erros de entradas também.
+
 '''
 
 
