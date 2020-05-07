@@ -34,7 +34,7 @@ class Historico:
                     n_letras += 1
             custo_d = n_letras * 0.35
             tot = custo_m + custo_d + tot
-        print(tot)
+        return tot
 
 
 class Pedido:
@@ -59,42 +59,69 @@ class Pedido:
         custo_desenho = numero_letras * self.__valor_fixo_letra
         valor_placa = custo_material + custo_desenho
         self.__valor = valor_placa
-        return numero_letras
+        return self.__valor
 
-    def emitir_recibo(self, qtd_letras):
+    def emitir_recibo(self):
+        qnt_let = 0
+        for letras in self.frase:
+            if letras != ' ':
+                qnt_let += 1
         print(f'Cliente: {self.cliente.nome}\
  \nTelefone: {self.cliente.telefone}\nLargura da Placa: {self.largura}\nAltura\
  da Placa: {self.altura}\nFrase: {self.frase}\nQuantidade de Letras:\
- {qtd_letras}\nValor: {self.__valor}')
+ {qnt_let}\nValor: {self.__valor}')
+
+# PROGRAMA PRINCIPAL PARA TESTAR AS CLASSES:
+
+# Criação do Endereço
 
 
-#  Primeiro cliente:
-obj_end = Endereco('Rua João Mateus Rendon', 'n 145 a', 'Casa 2', 'Pq São\
- Rafael', 'São Paulo', 'SP', '08320-170')
+endereco = Endereco("Rua Silva", "123", "Ap. 58", "Centro", "São Paulo", "SP", "05577-023")
 
-obj_cliente = Cliente('Lauro Jr', '(11)96187-0730', obj_end)
+# Cria do Cliente
+cliente = Cliente("Paulo", "(11) 99999-4565", endereco)
 
-obj_pedido1 = Pedido(obj_cliente, 0.45, 1.20, 'Olá Mundo!', 'Branco', '\
- Vermelho')
+# Criação do Primeiro Pedido
+pedido1 = Pedido(cliente, 1.0, 3.0, "50% de Desconto", "cinza", "vermelha")
 
-qtd_letras = obj_pedido1.get_valor()
-obj_pedido1.emitir_recibo(qtd_letras)
-
-#  Segundo cliente:
+# Imprime recibo do Primerio Pedido
+pedido1.get_valor()
+pedido1.emitir_recibo()
 print()
-obj_end = Endereco('Rua João Mateus Rendon', 'n 145 a', 'Casa 2', 'Pq São\
- Rafael', 'São Paulo', 'SP', '08320-170')
 
-obj_cliente = Cliente('Paulo', '(11)96187-0730', obj_end)
+# Criação do Segundo Pedido
+pedido2 = Pedido(cliente, 0.5, 2, "Estamos Atendendo", "cinza", "vermelha")
 
-obj_pedido2 = Pedido(obj_cliente, 1.0, 3.0, '50% de Desconto', 'Branco', '\
- Vermelho')
+# Imprime recibo do Segundo Pedido
+pedido2.get_valor()
+pedido2.emitir_recibo()
+print()
+# Impressao de dados para teste                                 # VALORES A SER IMPRESSOS:
+print("Nome:", pedido1.cliente.nome)                            # Paulo
+print("Telefone:", pedido1.cliente.telefone)                    # (11) 99999-4565
+print("Rua:", pedido1.cliente.endereco.rua)                     # Rua Silva
+print("Número:", pedido1.cliente.endereco.numero)               # 123
+print("Complemento:", pedido1.cliente.endereco.complemento)     # Ap. 58
+print("Bairro:", pedido1.cliente.endereco.bairro)               # Centro
+print("Cidade:", pedido1.cliente.endereco.cidade)               # São Paulo
+print("UF:", pedido1.cliente.endereco.uf)                       # SP
+print("CEP:", pedido1.cliente.endereco.cep)                     # 05577-023
+print("Altura:", pedido1.altura)                                # 1.0
+print("Largura:", pedido1.largura)                              # 3.0
+print("Frase:", pedido1.frase)                                  # 50% de Desconto
+print("Cor da Placa:", pedido1.cor_placa)                       # cinza
+print("Cor da Letra:", pedido1.cor_letra)                       # vermelha
 
-qtd_letras = obj_pedido2.get_valor()
-obj_pedido2.emitir_recibo(qtd_letras)
+print("Valor do Primeiro Pedido:", pedido1.get_valor())         # 445.55
 
-obj_hist = Historico()
-obj_hist.inserir_pedidos(obj_pedido1)
-obj_hist.inserir_pedidos(obj_pedido2)
+print("Valor do Segundo Pedido:", pedido2.get_valor())          # 152.6
 
-obj_hist.calcular_faturamento()
+#cria objeto Historico
+historico = Historico()
+
+# Insere pedidos no histórico
+historico.inserir_pedidos(pedido1)
+historico.inserir_pedidos(pedido2)
+
+# Exibe Faturamento Total
+print("Faturamento Total: ", historico.calcular_faturamento())  # 598.15
