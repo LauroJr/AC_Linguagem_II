@@ -10,9 +10,11 @@ banco.criar_tabela()
 filme1 = Filme("Parasite", "Bong Joon Ho", 2019, 132, 40273, 8.6, 'Comedy, Drama, Thriller')
 banco.incluir(filme1)
 
+
 # Verifica se o objeto foi armazenados no banco. O ID será atribuído automaticamente aos objetos
 print('ID do filme:', filme1.id)       # 1 (será 1 apenas na primeira inserção, depois o id vai aumentando conforme a inserção dos dados)
 print('Nome do filme:', filme1.nome)   # Parasite
+
 
 # Incluir lista de objetos no banco de dados
 filme2 = Filme("Joker", "Todd Phillips", 2019, 122, 78481, 8.5, 'Crime, Drama, Thriller')
@@ -24,6 +26,7 @@ filme7 = Filme("The Hunger Games", "Gary Ross, Dawn Gilliam", 2012, 142, 14241, 
 filme8 = Filme("The Last of the Mohicans", "Michael Mann", 1992, 112, 1336, 7.3, "Action, Adventure, Drama, History, Romance, War")
 filme9 = Filme("Ninja", "Isaac Florentine", 2009, 83, 125, 5.6, "Action, Crime, Drama, Thriller")
 filme10 = Filme("Oblivion", "Joseph Kosinski, Rebecca Boyle, Trisha Burton", 2013, 124, 6691, 6.5, "Action, Science Fiction, Adventure, Mystery")
+
 
 lista_filmes = [filme2, filme3, filme4, filme5, filme6, filme7, filme8, filme9, filme10]
 banco.incluir_lista(lista_filmes)
@@ -60,9 +63,11 @@ for f in lista:     # exibe a lista dos filmes
 # Busca o filme de id 7
 filme = banco.buscar_por_id(7)
 
+
 # altera a avalação do filme de id 7 para 8.7
 if filme is not None:
     banco.alterar_avaliacao(filme, 8.7)
+
 
 # Exclui o filme de id 6
 banco.excluir(6)

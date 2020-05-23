@@ -1,8 +1,11 @@
-# NOME E RA DO ALUNO 1
-# NOME E RA DO ALUNO 2
-# NOME E RA DO ALUNO 3
-# NOME E RA DO ALUNO 4
-# NOME E RA DO ALUNO 5
+# Linguagem de Programação II
+# AC05 - Filme
+#
+# Nome Aluno 1: LAURO MENDES DO AMARAL JUNIOR     -- RA: 1902047
+# Nome Aluno 2: JEFFERSON OLIVEIRA DOS SANTOS     -- RA: 1901787
+# Nome Aluno 3: REINALDO DOS REIS BARBOSA         -- RA: 1901727
+# Nome Aluno 4: VITOR ALKINDAR SANTOS RODRIGUES   -- RA: 1901951
+# Nome Aluno 5: MARIA ALICE SILVA BARRETO MOURA   -- RA: 1902464
 
 import sqlalchemy
 
@@ -10,7 +13,7 @@ from sqlalchemy import Column, Integer, String, Float, desc
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Session
 
-# Cria Conexão com o SQLITE. 
+# Cria Conexão com o SQLITE.
 # Será criado o arquivo server.db no diretório atual
 engine = sqlalchemy.create_engine("sqlite:///server.db")
 connection = engine.connect()
@@ -19,12 +22,16 @@ session = Session()
 
 
 class Filme(Base):
-    '''
-
-    IMPLEMENTAR AQUI O MAPEAMENTO DA TABELA FILME
-
-
-    '''
+    # IMPLEMENTEI
+    __tablename__ = 'FILME'
+    id = Column('ID', Integer, primary_key=True, autoincrement=True)
+    nome = Column('NOME', String(255))
+    diretor = Column('DIRETOR', String(255))
+    ano = Column('ANO', Integer)
+    duracao = Column('DURACAO', Integer)
+    votos = Column('VOTOS', Integer)
+    avaliacao = Column('AVALIACAO', Float)
+    genero = Column('GENERO', String(255))
 
     # Construtor
     def __init__(self, nome, diretor, ano, duracao, votos, avaliacao, genero):
@@ -67,21 +74,26 @@ class Banco:
         Recebe uma lista de objetos Filme e armazena esse
         objeto no banco de dados
         '''
-        pass
+        session.add_all(filmes)
+        session.commit()
 
     def alterar_avaliacao(self, filme: Filme, avaliacao: float):
         '''
         Recebe um objeto filme e altera sua avaliação de
         acordo com o valor do parametro avaliacao
         '''
-        pass
+        filme.avaliacao = avaliacao
+        session.commit()
 
     def excluir(self, id: int):
         '''
         Recebe o id do filme e exclui o filme correspondente
         do banco de dados
         '''
-        pass
+        filme = session.query(Filme).get(id)    # busca o registro pelo id
+        if filme is not None:
+            session.delete(filme)
+            session.commit()
 
     def buscar_todos(self):
         '''
@@ -98,7 +110,10 @@ class Banco:
         Realiza busca no banco de dados e retorna um
         objeto Filme de acordo com id
         '''
-        pass
+        lista = session.query(Filme).filter(Filme.id == id).order_by(Filme.id).all()
+        for filme in lista:
+            if filme.id == id:
+                return filme
 
     def buscar_por_ano(self, ano: int):
         '''
@@ -106,7 +121,8 @@ class Banco:
         lista de objetos Filme do ano correspondente,
         ordenado pelo ID de forma crescente
         '''
-        pass
+        lista = session.query(Filme).filter(Filme.ano == ano).order_by(Filme.id).all()
+        return lista
 
     def buscar_por_genero(self, genero: str):
         '''
@@ -114,7 +130,8 @@ class Banco:
         lista de objetos Filme do genero correspondente,
         ordenados pelo nome de forma crescente
         '''
-        pass
+        lista = session.query(Filme).filter(Filme.genero.like("%" + genero + "%")).order_by(Filme.nome).all()
+        return lista
 
     def buscar_melhores_do_ano(self, ano: int):
         '''
@@ -125,4 +142,5 @@ class Banco:
         DICA - utilize a função:
             .order_by(desc(Filme.avaliacao))
         '''
-        pass
+        lista = session.query(Filme).filter(Filme.ano == ano, Filme.avaliacao >= 8.5).order_by(desc(Filme.avaliacao)).all()
+        return lista
